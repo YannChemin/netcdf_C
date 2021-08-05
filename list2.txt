@@ -1,0 +1,1 @@
+NETCDF:"BEC_SM____SMOS__EUM_L4__A_20210523T034440_001km_3d_REP_v5.0.nc":quality_flag

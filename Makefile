@@ -1,5 +1,5 @@
-becsmos: 0_0_open.c
-	gcc -o becsmos 0_0_open.c -I/usr/include/gdal/ -L/usr/lib -lgdal -lm -Wall -fopenmp
+becsmos: becsmos.c
+	gcc -o becsmos becsmos.c -lm -I/usr/include/gdal -L/usr/lib -lgdal
 
 clean:
 	rm -rf becsmos

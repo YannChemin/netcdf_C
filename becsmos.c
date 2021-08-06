@@ -16,6 +16,15 @@ void usage()
 	printf("inQC is BECSMOS Quality Assessment\n");
 }
 
+//double pixel_to_world(geo_matrix, x, y){
+//	double ul_x = geo_matrix[0];
+//	double ul_y = geo_matrix[3];
+//	double x_dist = geo_matrix[1];
+//	double y_dist = geo_matrix[5];
+//	double lon = col * x_dist + ul_x;
+//	double lat = row * y_dist + ul_y;
+//	return (lon, lat);
+//}
 int main( int argc, char *argv[] )
 {
 	if( argc < 1 ) {
@@ -80,6 +89,12 @@ int main( int argc, char *argv[] )
 	    printf( "Origin = (%.6f,%.6f)\n",adfGeoT[0], adfGeoT[3] );
 	    printf( "Pixel Size = (%.6f,%.6f)\n",adfGeoT[1], adfGeoT[5] );
 	}
+	double ul_x = adfGeoT[0];
+	double ul_y = adfGeoT[3];
+	double x_dist = adfGeoT[1];
+	double y_dist = adfGeoT[5];
+	//double lon = col * x_dist + ul_x;
+	//double lat = row * y_dist + ul_y;
 
 	//Loading the files drivers
 	GDALDriverH hDrQC = GDALGetDatasetDriver(hDQC[0]);
@@ -126,13 +141,16 @@ int main( int argc, char *argv[] )
 			GDALRasterIO(hBQC[x],GF_Read,0,row,nX,1,lineQ,nX,1,GDT_Int32,0,0);
 			//Processing the data cellxcell
 			for(col = 0 ; col < nX ; col++){
+				double lon = col * x_dist + ul_x;
+				double lat = row * y_dist + ul_y;
+				printf("\nWrite Long/Lat: %f %f \t",lon,lat);
 				//if no data or quality flag fail skip it
 				if(lineB[col]!=-999.0 && lineQ[col]==0){
 					// if pixel are correct, process our algorithms
 					// process the correction to m3/m3
 					smosx = lineB[col] * scale_factor;
 					// Write to meteo array
-					printf("Write to meteo array SM=%0.4f\n", smosx );
+					printf(" %0.4f\t", smosx );
 				}
 			}
 		}
